@@ -1,0 +1,151 @@
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading mb-3">
+      <h2 id="title">User Registration Form</h2>
+    </div>
+    <div class="form-container">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group mb-3">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            formControlName="firstName"
+            id="firstName"
+            class="form-control"
+            placeholder="John"
+            aria-label="First Name"
+            aria-describedby="basic-addon1"
+            required
+            ng-minlength="3"
+            required
+          />
+        </div>
+        <!-- First name errors -->
+        <div
+          class="alert alert-danger"
+          *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+        >
+          <div *ngIf="firstName.errors?.required">First Name is required.</div>
+          <div *ngIf="firstName.errors?.minlength">
+            First Name must be at least 3 characters long.
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            formControlName="lastName"
+            id="lastName"
+            class="form-control"
+            placeholder="Doe"
+            aria-label="Last Name"
+            aria-describedby="basic-addon1"
+            required
+            ng-minlength="3"
+          />
+        </div>
+        <!-- Last Name errors -->
+        <div
+          class="alert alert-danger"
+          *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+        >
+          <div *ngIf="lastName.errors?.required">Last Name is required.</div>
+          <div *ngIf="lastName.errors?.minlength">
+            Last Name must be at least 3 characters long.
+          </div>
+        </div>
+
+        <!-- Nick name -->
+        <div class="form-group mb-3">
+          <label for="nickName">Nick Name</label>
+          <input
+            type="text"
+            formControlName="nickName"
+            id="nickName"
+            placeholder="Johny"
+            class="form-control"
+            aria-label="Nick Name"
+          />
+        </div>
+
+        <!-- Role (Student or Mentor) -->
+        <div class="form-group mb-3">
+          <label for="type">Type</label>
+          <input
+            type="text"
+            formControlName="type"
+            id="type"
+            placeholder="Student or Mentor"
+            class="form-control"
+            aria-label="Type"
+            required
+          />
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            formControlName="email"
+            id="email"
+            class="form-control"
+            placeholder="email@example.com"
+            aria-label="Email"
+            aria-describedby="basic-addon1"
+            required
+          />
+        </div>
+        <!-- Email errors  -->
+        <div
+          class="alert alert-danger"
+          *ngIf="email.invalid && (email.dirty || email.touched)"
+        >
+          <div *ngIf="email.errors?.required">Email is required.</div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            placeholder="m@2#aAc%"
+            aria-label="Password"
+            aria-describedby="basic-addon1"
+            required
+            ng-minlength="6"
+          />
+        </div>
+        <!-- Password errors  -->
+        <div
+          class="alert alert-danger"
+          *ngIf="password.invalid && (password.dirty || password.touched)"
+        >
+          <div *ngIf="password.errors?.required">Password is required.</div>
+          <div *ngIf="password.errors?.minlength">
+            Password must be at least 6 characters long.
+          </div>
+          <div *ngIf="password.errors?.pattern">
+            Password must be Minimum 6 characters, at least one uppercase
+            letter, one lowercase letter, one number and one special character.
+          </div>
+        </div>
+
+        <!-- Form submit button -->
+        <div class="form-actions floatRight">
+          <input
+            class="btn btn-primary"
+            type="submit"
+            id="registerBtn"
+            value="Register"
+            [disabled]="registerForm.invalid"
+          />
+          <!-- value="{{ !user.id ? 'Register' : 'Update' }}" -->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading mb-3">
+      <h2 id="title" class="my-5">User Login Form</h2>
+    </div>
+    <div class="form-container">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group mb-3">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            formControlName="email"
+            id="email"
+            class="form-control"
+            placeholder="email@example.com"
+            aria-label="Email"
+            aria-describedby="basic-addon1"
+            required
+          />
+        </div>
+        <!-- Email errors  -->
+        <div
+          class="alert alert-danger"
+          *ngIf="email.invalid && (email.dirty || email.touched)"
+        >
+          <div *ngIf="email.errors?.required">Email is required.</div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            placeholder="m@2#aAc%"
+            aria-label="Password"
+            aria-describedby="basic-addon1"
+            required
+            ng-minlength="6"
+          />
+        </div>
+        <!-- Password errors  -->
+        <div
+          class="alert alert-danger"
+          *ngIf="password.invalid && (password.dirty || password.touched)"
+        >
+          <div *ngIf="password.errors?.required">Password is required.</div>
+          <div *ngIf="password.errors?.minlength">
+            Password must be at least 6 characters long.
+          </div>
+          <div *ngIf="password.errors?.pattern">
+            Password must be Minimum 6 characters, at least one uppercase
+            letter, one lowercase letter, one number and one special character.
+          </div>
+        </div>
+
+        <!-- Form submit button -->
+        <div class="form-actions floatRight">
+          <input
+            class="btn btn-primary"
+            type="submit"
+            id="loginBtn"
+            value="Login"
+            [disabled]="loginForm.invalid"
+          />
+          <!-- value="{{ !user.id ? 'Register' : 'Update' }}" -->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

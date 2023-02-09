@@ -1,0 +1,214 @@
+<div class="container panel panel-default mt-5">
+  <h1 class="mb-4" id="title">{{ user?.lastName }}'s Profile</h1>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>CreatedAt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="fName">{{ user?.firstName }}</td>
+        <td>{{ user?.lastName }}</td>
+        <td>{{ user?.email }}</td>
+        <td>
+          {{ user?.createdAt | date : "medium" }}
+        </td>
+        <td>
+          <button
+            type="button"
+            id="openModalBtn"
+            (click)="open(content)"
+            class="btn btn-success custom-width"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            (click)="onRemove(user.id)"
+            class="btn btn-danger custom-width"
+          >
+            Remove
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Profile edit form modal -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Profile update</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form #profileForm="ngForm" (ngSubmit)="profileForm.valid && onSubmit()">
+      <input type="hidden" id="id" [(ngModel)]="user.id" name="id" />
+      <div class="input-group mb-3">
+        <span class="input-group-text">First Name </span>
+        <input
+          type="text"
+          [(ngModel)]="user.firstName"
+          name="firstName"
+          #firstName="ngModel"
+          id="firstName"
+          class="form-control"
+          placeholder="John"
+          aria-label="First Name"
+          aria-describedby="First Name"
+          ng-minlength="3"
+          required
+        />
+      </div>
+      <!-- First Name errors -->
+      <div
+        class="alert alert-danger"
+        *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+      >
+        <div *ngIf="firstName.errors?.required">First Name is required.</div>
+        <div *ngIf="firstName.errors?.minlength">
+          First Name must be at least 3 characters long.
+        </div>
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text">Last Name </span>
+        <input
+          type="text"
+          [(ngModel)]="user.lastName"
+          name="lastName"
+          #lastName="ngModel"
+          id="lastName"
+          class="form-control"
+          placeholder="Doe"
+          aria-label="Last Name"
+          aria-describedby="Last Name"
+          required
+          ng-minlength="3"
+        />
+      </div>
+      <!-- Last Name errors -->
+      <div
+        class="alert alert-danger"
+        *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+      >
+        <div *ngIf="lastName.errors?.required">Last Name is required.</div>
+        <div *ngIf="lastName.errors?.minlength">
+          Last Name must be at least 3 characters long.
+        </div>
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text">Nick Name </span>
+        <input
+          type="text"
+          [(ngModel)]="user.nickName"
+          name="nickName"
+          #nickName="ngModel"
+          id="nickName"
+          class="form-control"
+          placeholder="John (Optional)"
+          aria-label="Nick Name"
+          aria-describedby="Nick Name"
+        />
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text">Email </span>
+        <input
+          type="email"
+          [(ngModel)]="user.email"
+          name="email"
+          #email="ngModel"
+          id="formEmail"
+          class="form-control"
+          placeholder="john.doe@domain.com"
+          aria-label="Eamil"
+          aria-describedby="Email"
+          required
+        />
+      </div>
+      <!-- Email errors  -->
+      <div
+        class="alert alert-danger"
+        *ngIf="email.invalid && (email.dirty || email.touched)"
+      >
+        <div *ngIf="email.errors?.required">Email is required.</div>
+        <div *ngIf="email.errors?.invalid">Email is invalid.</div>
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-lock"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"
+            />
+          </svg>
+        </span>
+        <input
+          type="password"
+          [(ngModel)]="user.password"
+          name="password"
+          #password="ngModel"
+          id="password"
+          class="form-control"
+          placeholder="m@2#ac%"
+          aria-label="Password"
+          aria-describedby="basic-addon1"
+          required
+          ng-minlength="6"
+        />
+      </div>
+      <!-- Password errors  -->
+      <div
+        class="alert alert-danger"
+        *ngIf="password.invalid && (password.dirty || password.touched)"
+      >
+        <div *ngIf="password.errors?.required">Password is required.</div>
+        <div *ngIf="password.errors?.minlength">
+          Password must be at least 6 characters long.
+        </div>
+        <!-- <div *ngIf="password.errors?.pattern">
+          Password must be Minimum 6 characters, at least one uppercase letter,
+          one lowercase letter, one number and one special character.
+        </div> -->
+      </div>
+
+      <div class="form-actions right" align="right">
+        <button
+          id="submitBtn"
+          type="submit"
+          [disabled]="profileForm.invalid"
+          class="btn btn-outline-dark"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      id="closeModalBtn"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')"
+    >
+      Close
+    </button>
+  </div>
+</ng-template>

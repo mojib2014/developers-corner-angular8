@@ -1,0 +1,111 @@
+<!-- Question form -->
+<form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+  <div class="input-group mb-3">
+    <span class="input-group-text" id="basic-addon1">User Name</span>
+    <input
+      type="text"
+      id="username"
+      name="username"
+      formControlName="username"
+      class="form-control"
+      placeholder="mojib2014"
+      aria-label="Username"
+      aria-describedby="basic-addon1"
+      ng-minlength="3"
+      required
+    />
+  </div>
+  <!-- username errors -->
+  <div
+    class="alert alert-danger"
+    *ngIf="username.invalid && (username.dirty || username.touched)"
+  >
+    <div *ngIf="username.errors?.required" id="username-required">
+      Username is required.
+    </div>
+    <div *ngIf="username.errors?.minlength">
+      Username must be at least 3 characters long.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <input
+      type="radio"
+      id="student"
+      name="role"
+      formControlName="role"
+      value="Student"
+      class="button btn-sm btn-info student-btn"
+      required
+    />
+    <label class="mr-3" for="student">I'm a Student</label>
+    <input
+      type="radio"
+      id="mentor"
+      name="role"
+      formControlName="role"
+      value="Mentor"
+      class="button btn-sm btn-info mentor-btn"
+      required
+    />
+    <label for="mentor">I'm a Mentor</label>
+  </div>
+  <!-- role errors -->
+  <div
+    class="alert alert-danger"
+    *ngIf="role.invalid && (role.dirty || role.touched)"
+  >
+    <div *ngIf="role.errors?.required">Role is required.</div>
+  </div>
+
+  <div class="input-group mb-3">
+    <span class="input-group-text" for="tags">Tags</span>
+    <input
+      type="text"
+      name="tags"
+      id="tags"
+      formControlName="tags"
+      class="form-control"
+      placeholder="Java"
+      aria-label="Tags"
+      aria-describedby="basic-addon1"
+      required
+    />
+  </div>
+  <!-- tags errors -->
+  <div
+    class="alert alert-danger"
+    *ngIf="tags.invalid && (tags.dirty || tags.touched)"
+  >
+    <div *ngIf="tags.errors?.required">Tags is required.</div>
+  </div>
+
+  <div class="input-group mb-3">
+    <textarea
+      name="question"
+      id="question"
+      formControlName="question"
+      class="form-control"
+      rows="3"
+      placeholder="Enter a topic you wanna search for"
+      required
+    ></textarea>
+  </div>
+  <!-- question errors -->
+  <div
+    class="alert alert-danger"
+    *ngIf="question.invalid && (question.dirty || question.touched)"
+  >
+    <div *ngIf="question.errors?.required">Question is required.</div>
+  </div>
+
+  <div class="form-actions floatRight">
+    <input
+      class="btn btn-primary"
+      [disabled]="questionForm.invalid"
+      id="questionBtn"
+      type="submit"
+      value="Go"
+    />
+  </div>
+</form>

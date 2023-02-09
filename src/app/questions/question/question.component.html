@@ -1,0 +1,187 @@
+<div class="container panel panel-default mt-5">
+  <table class="table table-hover" id="questionTable">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Tags</th>
+        <th>Role</th>
+        <th>Question</th>
+        <th>UserId</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="questions.length">
+        <tr *ngFor="let question of questions" id="list">
+          <td>{{ question.username }}</td>
+          <td>{{ question.tags }}</td>
+          <td>{{ question.role }}</td>
+          <td>{{ question.question }}</td>
+          <td>{{ question.user.id }}</td>
+          <td>
+            <button
+              type="button"
+              id="openModal"
+              (click)="open(content, question)"
+              class="btn btn-success custom-width"
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              id="removeBtn"
+              (click)="onRemove(question.id)"
+              class="btn btn-danger custom-width"
+            >
+              Remove
+            </button>
+          </td>
+        </tr>
+      </ng-container>
+      <p *ngIf="!questions.length">You don't have any questions yet.</p>
+    </tbody>
+  </table>
+</div>
+
+<!-- Question edit form modal -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Question update</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form #questionForm="ngForm" (ngSubmit)="questionForm.valid && onSubmit()">
+      <input
+        type="hidden"
+        id="id"
+        [(ngModel)]="questionToUpdate.id"
+        name="id"
+      />
+      <div class="input-group mb-3">
+        <span class="input-group-text">Username </span>
+        <input
+          type="text"
+          [(ngModel)]="questionToUpdate.username"
+          name="username"
+          #username="ngModel"
+          id="username"
+          class="form-control"
+          placeholder="John"
+          aria-label="Username"
+          aria-describedby="Username"
+          ng-minlength="3"
+          required
+        />
+      </div>
+      <!-- Username errors -->
+      <div
+        class="alert alert-danger"
+        *ngIf="username.invalid && (username.dirty || username.touched)"
+      >
+        <div *ngIf="username.errors?.required">Username is required.</div>
+        <div *ngIf="username.errors?.minlength">
+          Username must be at least 3 characters long.
+        </div>
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text">Tags </span>
+        <input
+          type="text"
+          [(ngModel)]="questionToUpdate.tags"
+          name="tags"
+          #tags="ngModel"
+          id="tags"
+          class="form-control"
+          placeholder="Java | JavaScript"
+          aria-label="Tags"
+          aria-describedby="Tags"
+          required
+          ng-minlength="3"
+        />
+      </div>
+      <!-- Tags errors -->
+      <div
+        class="alert alert-danger"
+        *ngIf="tags.invalid && (tags.dirty || tags.touched)"
+      >
+        <div *ngIf="tags.errors?.required">Tags is required.</div>
+        <div *ngIf="tags.errors?.minlength">
+          Tags must be at least 3 characters long.
+        </div>
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text">Role </span>
+        <input
+          type="text"
+          [(ngModel)]="questionToUpdate.role"
+          name="role"
+          #role="ngModel"
+          id="role"
+          class="form-control"
+          placeholder="Student | Mentor"
+          aria-label="Role"
+          aria-describedby="Role"
+          required
+        />
+      </div>
+      <!-- Role errors  -->
+      <div
+        class="alert alert-danger"
+        *ngIf="role.invalid && (role.dirty || role.touched)"
+      >
+        <div *ngIf="role.errors?.required">Role is required.</div>
+        <div *ngIf="role.errors?.invalid">Role is invalid.</div>
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1"> Question </span>
+        <input
+          type="text"
+          [(ngModel)]="questionToUpdate.question"
+          name="question"
+          #question="ngModel"
+          id="question"
+          class="form-control"
+          placeholder="Java data types"
+          aria-label="Question"
+          aria-describedby="basic-addon1"
+          required
+        />
+      </div>
+      <!-- question errors  -->
+      <div
+        class="alert alert-danger"
+        *ngIf="question.invalid && (question.dirty || question.touched)"
+      >
+        <div *ngIf="question.errors?.required">Question is required.</div>
+      </div>
+
+      <div class="form-actions right" align="right">
+        <button
+          id="submitBtn"
+          type="submit"
+          [disabled]="questionForm.invalid"
+          class="btn btn-outline-dark"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      id="closeModalBtn"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')"
+    >
+      Close
+    </button>
+  </div>
+</ng-template>
