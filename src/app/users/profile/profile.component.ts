@@ -26,6 +26,8 @@ export class ProfileComponent implements OnInit {
 
   open(user: User) {
     this.user.password = "";
+    console.log(this.user);
+
     this.modalService
       .open(user, { ariaLabelledBy: "modal-basic-title" })
       .result.then((result) => console.log(result));

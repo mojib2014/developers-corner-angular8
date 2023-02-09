@@ -1,7 +1,7 @@
 <div class="container">
   <div class="panel panel-default">
     <div class="panel-heading mb-3">
-      <h2 id="title">User Registration Form</h2>
+      <h2 id="title" class="my-5">User Login Form</h2>
     </div>
     <div class="form-container">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -60,7 +60,7 @@
           <input
             class="btn btn-primary"
             type="submit"
-            id="registerBtn"
+            id="loginBtn"
             value="Login"
             [disabled]="loginForm.invalid"
           />

@@ -12,7 +12,7 @@
     <tbody>
       <ng-container *ngIf="questions.length">
         <tr *ngFor="let question of questions" id="list">
-          <td id="username">{{ question.username }}</td>
+          <td>{{ question.username }}</td>
           <td>{{ question.tags }}</td>
           <td>{{ question.role }}</td>
           <td>{{ question.question }}</td>
@@ -42,7 +42,7 @@
   </table>
 </div>
 
-<!-- Profile edit form modal -->
+<!-- Question edit form modal -->
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-title">Question update</h4>
@@ -55,11 +55,17 @@
   </div>
   <div class="modal-body">
     <form #questionForm="ngForm" (ngSubmit)="questionForm.valid && onSubmit()">
+      <input
+        type="hidden"
+        id="id"
+        [(ngModel)]="questionToUpdate.id"
+        name="id"
+      />
       <div class="input-group mb-3">
         <span class="input-group-text">Username </span>
         <input
           type="text"
-          [(ngModel)]="updatedQuestion.username"
+          [(ngModel)]="questionToUpdate.username"
           name="username"
           #username="ngModel"
           id="username"
@@ -86,7 +92,7 @@
         <span class="input-group-text">Tags </span>
         <input
           type="text"
-          [(ngModel)]="updatedQuestion.tags"
+          [(ngModel)]="questionToUpdate.tags"
           name="tags"
           #tags="ngModel"
           id="tags"
@@ -113,37 +119,38 @@
         <span class="input-group-text">Role </span>
         <input
           type="text"
-          [(ngModel)]="updatedQuestion.role"
+          [(ngModel)]="questionToUpdate.role"
           name="role"
           #role="ngModel"
           id="role"
           class="form-control"
-          placeholder="Student or Mentor"
+          placeholder="Student | Mentor"
           aria-label="Role"
           aria-describedby="Role"
           required
         />
       </div>
-      <!-- role errors  -->
+      <!-- Role errors  -->
       <div
         class="alert alert-danger"
         *ngIf="role.invalid && (role.dirty || role.touched)"
       >
         <div *ngIf="role.errors?.required">Role is required.</div>
+        <div *ngIf="role.errors?.invalid">Role is invalid.</div>
       </div>
 
       <div class="input-group mb-3">
-        <span class="input-group-text">Question </span>
+        <span class="input-group-text" id="basic-addon1"> Question </span>
         <input
           type="text"
-          [(ngModel)]="updatedQuestion.question"
+          [(ngModel)]="questionToUpdate.question"
           name="question"
           #question="ngModel"
-          id="formQuestion"
+          id="question"
           class="form-control"
           placeholder="Java data types"
           aria-label="Question"
-          aria-describedby="Question"
+          aria-describedby="basic-addon1"
           required
         />
       </div>
@@ -170,6 +177,7 @@
   <div class="modal-footer">
     <button
       type="button"
+      id="closeModalBtn"
       class="btn btn-outline-dark"
       (click)="modal.close('Save click')"
     >

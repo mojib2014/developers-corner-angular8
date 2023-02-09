@@ -11,7 +11,7 @@ import { QuestionsService } from "src/app/shared/services/questions.service";
 export class QuestionComponent implements OnInit {
   @Input() questions: Question[] = [];
 
-  updatedQuestion: Question;
+  questionToUpdate: Question;
 
   constructor(
     private modalService: NgbModal,
@@ -20,19 +20,19 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit() {}
 
-  open(content, question) {
-    this.updatedQuestion = question;
-    this.updatedQuestion.userId = question.user.id;
-    this.updatedQuestion.role = question.user.type;
+  open(content, question: Question) {
+    this.questionToUpdate = question;
+    this.questionToUpdate.role = question.user.type;
+    console.log(question);
+
     this.modalService
       .open(content, { ariaLabelledBy: "Question Update" })
       .result.then((result) => console.log(result));
   }
 
   onSubmit() {
-    console.log("submited", this.updatedQuestion);
     this.questionService
-      .update(this.updatedQuestion)
+      .update(this.questionToUpdate)
       .subscribe((data) => console.log(data));
   }
 
