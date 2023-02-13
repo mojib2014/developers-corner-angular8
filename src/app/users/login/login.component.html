@@ -1,12 +1,12 @@
 <div class="container">
   <div class="panel panel-default">
     <div class="panel-heading mb-3">
-      <h2 id="title" class="my-5">User Login Form</h2>
+      <h2 id="title" class="my-5">{{ "LOGIN.TITLE" | translate }}</h2>
     </div>
     <div class="form-container">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="form-group mb-3">
-          <label for="email">Email</label>
+          <label for="email">{{ "LOGIN.EMAIL" | translate }}</label>
           <input
             type="email"
             formControlName="email"
@@ -27,7 +27,7 @@
         </div>
 
         <div class="form-group mb-3">
-          <label for="password">Password</label>
+          <label for="password">{{ "LOGIN.PASSWORD" | translate }}</label>
           <input
             type="password"
             id="password"
@@ -61,7 +61,7 @@
             class="btn btn-primary"
             type="submit"
             id="loginBtn"
-            value="Login"
+            value="{{ 'LOGIN.BTN' | translate }}"
             [disabled]="loginForm.invalid"
           />
           <!-- value="{{ !user.id ? 'Register' : 'Update' }}" -->

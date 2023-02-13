@@ -12,7 +12,7 @@ import { AuthService } from "../services/auth.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService) { }
 
   intercept(
     req: HttpRequest<any>,
@@ -25,11 +25,13 @@ export class AuthInterceptor implements HttpInterceptor {
         "auth interceptor got called and added token================",
         token
       );
-      const authReq = req.clone({
-        setHeaders: { Authorization: "Bearer " + token },
-      });
+      // console.log('header: -----', req.headers.get('jwt'));
 
-      return next.handle(authReq);
+      // const authReq = req.clone({
+      //   setHeaders: { Authorization: "Bearer " + token },
+      // });
+
+      return next.handle(req);
     } else return next.handle(req);
   }
 }

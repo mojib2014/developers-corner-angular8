@@ -25,7 +25,7 @@ export class QuestionsService implements OnDestroy {
 
   create(question: Question): Observable<any> {
     return this.http
-      .post<any>(environment.baseUrl + `/user/questions`, question)
+      .post<any>(environment.baseUrl + `/user/questions`, question, { withCredentials: true })
       .pipe(
         tap((data) =>
           this.notificationSvc.success(
@@ -39,7 +39,7 @@ export class QuestionsService implements OnDestroy {
 
   getQuestionById(id: number): Observable<Question> {
     return this.http
-      .get<Question>(environment.baseUrl + `/user/questions/${id}`)
+      .get<Question>(environment.baseUrl + `/user/questions/${id}`, { withCredentials: true })
       .pipe(
         tap(() =>
           this.notificationSvc.success(
@@ -54,7 +54,7 @@ export class QuestionsService implements OnDestroy {
   getQuestionByUserId(id: number): Observable<Question[]> {
     return this.http
       .get<Question[]>(
-        environment.baseUrl + `/user/questions/question?userId=${id}`
+        environment.baseUrl + `/user/questions/question?userId=${id}`, { withCredentials: true }
       )
       .pipe(
         tap(() =>
@@ -70,13 +70,13 @@ export class QuestionsService implements OnDestroy {
   getQuestionByUsername(username: string): Observable<Question> {
     return this.http
       .get<Question>(
-        environment.baseUrl + `/user/questions/question/${username}`
+        environment.baseUrl + `/user/questions/question/${username}`, { withCredentials: true }
       )
       .pipe(catchError(this.handleError));
   }
 
   getAllQuestions(): Observable<Question[]> {
-    return this.http.get<any>(environment.baseUrl + `/user/questions`).pipe(
+    return this.http.get<any>(environment.baseUrl + `/user/questions`, { withCredentials: true }).pipe(
       tap((data) =>
         this.notificationSvc.success(
           "Questions",
@@ -91,7 +91,7 @@ export class QuestionsService implements OnDestroy {
     return this.http
       .put<any>(
         environment.baseUrl + `/user/questions/${question.id}`,
-        question
+        question, { withCredentials: true }
       )
       .pipe(
         tap(() =>
@@ -105,7 +105,7 @@ export class QuestionsService implements OnDestroy {
   }
 
   delete(id: number): Observable<any> {
-    return this.http.delete(environment.baseUrl + `/user/questions/${id}`).pipe(
+    return this.http.delete(environment.baseUrl + `/user/questions/${id}`, { withCredentials: true }).pipe(
       tap(() =>
         this.notificationSvc.success(
           "Questions",
@@ -133,11 +133,17 @@ export class QuestionsService implements OnDestroy {
     );
   }
 
-  private handleError({ error }: HttpErrorResponse) {
-    this.notificationSvc.error("Questions " + error.httpStatus, error.message);
-    return throwError(
-      () =>
-        new Error(`Something bad happened; please try again later. ${error}`)
-    );
+  private handleError(error: HttpErrorResponse) {
+    // In a real life app, we may send the error to some remote logging service
+    // instead of just logging it to the console
+    let errorMessage = "";
+    if (error.error instanceof ErrorEvent)
+      errorMessage = `An error occured: ${error.error.message}`;
+    else
+      errorMessage = `Server returned code: ${error.status}, error message is: ${error.message}`;
+
+    console.log(errorMessage);
+
+    return throwError(() => errorMessage);
   }
 }

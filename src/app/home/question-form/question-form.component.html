@@ -1,7 +1,9 @@
 <!-- Question form -->
 <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
   <div class="input-group mb-3">
-    <span class="input-group-text" id="basic-addon1">User Name</span>
+    <span class="input-group-text" id="basic-addon1">{{
+      "HOME.FORM.USERNAME" | translate
+    }}</span>
     <input
       type="text"
       id="username"
@@ -38,7 +40,9 @@
       class="button btn-sm btn-info student-btn"
       required
     />
-    <label class="mr-3" for="student">I'm a Student</label>
+    <label class="mr-3" for="student">{{
+      "HOME.FORM.STUDENT_ROLE" | translate
+    }}</label>
     <input
       type="radio"
       id="mentor"
@@ -48,7 +52,7 @@
       class="button btn-sm btn-info mentor-btn"
       required
     />
-    <label for="mentor">I'm a Mentor</label>
+    <label for="mentor">{{ "HOME.FORM.MENTOR_ROLE" | translate }}</label>
   </div>
   <!-- role errors -->
   <div

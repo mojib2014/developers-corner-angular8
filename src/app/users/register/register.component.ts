@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
+import { Subscription } from "rxjs";
 
 import { AuthService } from "src/app/shared/services/auth.service";
+import { NotificationService } from "src/app/shared/services/notification.service";
 
 @Component({
   selector: "app-register",
@@ -11,11 +13,13 @@ import { AuthService } from "src/app/shared/services/auth.service";
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+  sub!: Subscription;
 
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private notifService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -50,10 +54,18 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      this.auth
-        .register(this.registerForm.value)
-        .subscribe((data) => console.log(data));
-      this.router.navigate(["home"]);
+      this.sub = this.auth.register(this.registerForm.value).subscribe({
+        next: (data) => {
+          console.log("registering a user:", data);
+          this.router.navigate(["home"]);
+        },
+        error: (err) =>
+          this.notifService.error("Error registering a user", err()),
+      });
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) this.sub.unsubscribe();
   }
 }

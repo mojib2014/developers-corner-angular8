@@ -1,12 +1,12 @@
 <div class="container">
   <div class="panel panel-default">
     <div class="panel-heading mb-3">
-      <h2 id="title">User Registration Form</h2>
+      <h2 id="title">{{ "REGISTER.TITLE" | translate }}</h2>
     </div>
     <div class="form-container">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="form-group mb-3">
-          <label for="firstName">First Name</label>
+          <label for="firstName">{{ "REGISTER.FIRST_NAME" | translate }}</label>
           <input
             type="text"
             name="firstName"
@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-group mb-3">
-          <label for="lastName">Last Name</label>
+          <label for="lastName">{{ "REGISTER.LAST_NAME" | translate }}</label>
           <input
             type="text"
             formControlName="lastName"
@@ -59,7 +59,7 @@
 
         <!-- Nick name -->
         <div class="form-group mb-3">
-          <label for="nickName">Nick Name</label>
+          <label for="nickName">{{ "REGISTER.NICK_NAME" | translate }}</label>
           <input
             type="text"
             formControlName="nickName"
@@ -72,7 +72,7 @@
 
         <!-- Role (Student or Mentor) -->
         <div class="form-group mb-3">
-          <label for="type">Type</label>
+          <label for="type">{{ "REGISTER.TYPE" | translate }}</label>
           <input
             type="text"
             formControlName="type"
@@ -85,7 +85,7 @@
         </div>
 
         <div class="form-group mb-3">
-          <label for="email">Email</label>
+          <label for="email">{{ "REGISTER.EMAIL" | translate }}</label>
           <input
             type="email"
             formControlName="email"
@@ -106,7 +106,7 @@
         </div>
 
         <div class="form-group mb-3">
-          <label for="password">Password</label>
+          <label for="password">{{ "REGISTER.PASSWORD" | translate }}</label>
           <input
             type="password"
             id="password"
@@ -140,7 +140,7 @@
             class="btn btn-primary"
             type="submit"
             id="registerBtn"
-            value="Register"
+            value="{{ 'REGISTER.BTN' | translate }}"
             [disabled]="registerForm.invalid"
           />
           <!-- value="{{ !user.id ? 'Register' : 'Update' }}" -->

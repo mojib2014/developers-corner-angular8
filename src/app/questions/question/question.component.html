@@ -2,11 +2,11 @@
   <table class="table table-hover" id="questionTable">
     <thead>
       <tr>
-        <th>Username</th>
-        <th>Tags</th>
-        <th>Role</th>
-        <th>Question</th>
-        <th>UserId</th>
+        <th>{{ "HOME.FORM.USERNAME" | translate }}</th>
+        <th>{{ "HOME.FORM.TAGS" | translate }}</th>
+        <th>{{ "REGISTER.TYPE" | translate }}</th>
+        <th>{{ "HOME.FORM.QUESTION" | translate }}</th>
+        <th>{{ "QUESTION.USERID" | translate }}</th>
       </tr>
     </thead>
     <tbody>
@@ -51,7 +51,9 @@
       class="btn-close"
       aria-label="Close"
       (click)="modal.dismiss('Cross click')"
-    ></button>
+    >
+      X
+    </button>
   </div>
   <div class="modal-body">
     <form #questionForm="ngForm" (ngSubmit)="questionForm.valid && onSubmit()">

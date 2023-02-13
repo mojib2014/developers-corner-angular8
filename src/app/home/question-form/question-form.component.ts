@@ -1,8 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Subscription } from "rxjs";
 import { displayAnswersEvent } from "src/app/shared/models/questions.model";
 
 import { AuthService } from "src/app/shared/services/auth.service";
+import { NotificationService } from "src/app/shared/services/notification.service";
 import { QuestionsService } from "src/app/shared/services/questions.service";
 
 @Component({
@@ -16,10 +18,14 @@ export class QuestionFormComponent implements OnInit {
   currentUserId: number = 0;
   @Output() displayAnswersEvent = new EventEmitter<displayAnswersEvent>();
 
+  authSub!: Subscription;
+  questionSub!: Subscription;
+
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private questionService: QuestionsService
+    private questionService: QuestionsService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -31,7 +37,7 @@ export class QuestionFormComponent implements OnInit {
       userId: [],
     });
 
-    this.auth
+    this.authSub = this.auth
       .getCurrentUser()
       .subscribe((data) => (this.currentUserId = data.id));
   }
@@ -63,10 +69,20 @@ export class QuestionFormComponent implements OnInit {
   onSubmit() {
     this.questionForm.patchValue({ userId: this.currentUserId });
 
-    this.questionService
+    this.questionSub = this.questionService
       .create(this.questionForm.value)
-      .subscribe((data) => console.log("saved question", data));
+      .subscribe({
+        next: (data) => console.log("saving a question:", data),
+        error: (err) =>
+          this.notificationService.error("Error saving question", err),
+      });
 
     this.dataEvent();
+  }
+
+  ngOnDestroy(): void {
+    console.log("destroying question-form-component");
+    this.authSub.unsubscribe();
+    if (this.questionSub) this.questionSub.unsubscribe();
   }
 }

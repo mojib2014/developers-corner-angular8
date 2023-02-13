@@ -1,12 +1,10 @@
-import { User } from "./users.model";
-
 export interface Question {
   id?: number;
   username: string;
   role: string;
   tags: string;
   question: string;
-  user?: User;
+  userId: number;
 }
 
 export type displayAnswersEvent = {

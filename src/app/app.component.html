@@ -14,7 +14,7 @@
             routerLink="home"
             routerLinkActive="active"
             ariaCurrentWhenActive="page"
-            >Home</a
+            >{{ "APP.HOME" | translate }}</a
           >
         </li>
         <li *ngIf="!isLoggedIn()">
@@ -22,18 +22,20 @@
             routerLink="login"
             routerLinkActive="active"
             ariaCurrentWhenActive="page"
-            >Login</a
+            >{{ "APP.LOGIN" | translate }}</a
           >
         </li>
         <li *ngIf="isLoggedIn()">
-          <a (click)="logout()" routerLink="#">Logout</a>
+          <a (click)="logout()" routerLink="#">{{
+            "APP.LOGOUT" | translate
+          }}</a>
         </li>
         <li>
           <a
             routerLink="questions"
             routerLinkActive="active"
             ariaCurrentWhenActive="page"
-            >Questions</a
+            >{{ "APP.QUESTIONS" | translate }}</a
           >
         </li>
         <li *ngIf="!isLoggedIn()">
@@ -41,7 +43,7 @@
             routerLink="register"
             routerLinkActive="active"
             ariaCurrentWhenActive="page"
-            >Register</a
+            >{{ "APP.REGISTER" | translate }}</a
           >
         </li>
         <li>
@@ -49,8 +51,22 @@
             routerLink="profile"
             routerLinkActive="active"
             ariaCurrentWhenActive="page"
-            >Profile</a
+            >{{ "APP.PROFILE" | translate }}</a
           >
+        </li>
+        <li>
+          <label
+            >{{ "Languages" | translate }}
+            <select #langSelect (change)="translate.use(langSelect.value)">
+              <option
+                *ngFor="let lang of translate.getLangs()"
+                [value]="lang"
+                [selected]="lang === translate.currentLang"
+              >
+                {{ lang }}
+              </option>
+            </select>
+          </label>
         </li>
       </ul>
     </nav>
@@ -62,6 +78,6 @@
 <app-notification></app-notification>
 <footer>
   <div class="container">
-    <p>�DevelopersCorner 2023 All rights reserved</p>
+    <p>�{{ "DevelopersCorner 2023 All rights reserved" | translate }}</p>
   </div>
 </footer>

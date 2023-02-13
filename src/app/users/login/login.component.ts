@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription } from "rxjs";
 
 import { AuthService } from "src/app/shared/services/auth.service";
+import { NotificationService } from "src/app/shared/services/notification.service";
 
 @Component({
   selector: "app-login",
@@ -12,11 +14,14 @@ import { AuthService } from "src/app/shared/services/auth.service";
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   returnUrl: string;
+  sub!: Subscription;
+
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private notifService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -27,7 +32,6 @@ export class LoginComponent implements OnInit {
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/";
-    console.log(this.returnUrl);
   }
 
   get email() {
@@ -39,9 +43,14 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.auth
-        .login(this.loginForm.value)
-        .subscribe((data) => this.router.navigateByUrl(this.returnUrl));
+      this.sub = this.auth.login(this.loginForm.value).subscribe({
+        next: () => this.router.navigateByUrl(this.returnUrl),
+        error: (err) => this.notifService.error("Error deleting a user", err()),
+      });
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) this.sub.unsubscribe();
   }
 }
